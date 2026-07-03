@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="modules/ls_captcha/ls_captcha.php" source-language="en" target-language="it" datatype="plaintext">
+    <body>
+      <trans-unit id="624d0a0edac191bc5d821ec5c74acf4e" approved="yes">
+        <source>LS Captcha</source>
+        <target state="translated">LS Captcha</target>
+      </trans-unit>
+      <trans-unit id="38c050b467f1c2d498ecce51785bd3ff" approved="yes">
+        <source>Protect registration, login, contact and newsletter forms with the captcha provider of your choice.</source>
+        <target state="translated">Proteggi i moduli di registrazione, accesso, contatto e newsletter con il provider di captcha che preferisci.</target>
+      </trans-unit>
+      <trans-unit id="4006aadf9be9d5b7e9f4fa0e8a595b5d" approved="yes">
+        <source>Customer registration</source>
+        <target state="translated">Registrazione cliente</target>
+      </trans-unit>
+      <trans-unit id="4824d4a0f4c18624c5d641e29359670e" approved="yes">
+        <source>Customer login</source>
+        <target state="translated">Accesso cliente</target>
+      </trans-unit>
+      <trans-unit id="2c5a9165c71e696b699b2c3d462ca039" approved="yes">
+        <source>Contact page</source>
+        <target state="translated">Pagina di contatto</target>
+      </trans-unit>
+      <trans-unit id="9e31b08a00c1ed653bcaa517dee84714" approved="yes">
+        <source>Newsletter block</source>
+        <target state="translated">Blocco newsletter</target>
+      </trans-unit>
+      <trans-unit id="f38f5974cdc23279ffe6d203641a8bdf" approved="yes">
+        <source>Settings updated.</source>
+        <target state="translated">Impostazioni aggiornate.</target>
+      </trans-unit>
+      <trans-unit id="2b81327b62cf4ad8b609d13b513a23b8" approved="yes">
+        <source>Please fill the required fields: %s</source>
+        <target state="translated">Compila i campi obbligatori: %s</target>
+      </trans-unit>
+      <trans-unit id="49bd59b9d22e0f0fac301890ad24caf4" approved="yes">
+        <source>— None —</source>
+        <target state="translated">— Nessuno —</target>
+      </trans-unit>
+      <trans-unit id="0ed7b835ca279bee990f0482917abea3" approved="yes">
+        <source>Captcha provider</source>
+        <target state="translated">Provider del captcha</target>
+      </trans-unit>
+      <trans-unit id="859894d161f09aaa306a341915552718" approved="yes">
+        <source>Active provider</source>
+        <target state="translated">Provider attivo</target>
+      </trans-unit>
+      <trans-unit id="df15dc26469461ac3c538d540d58faa8" approved="yes">
+        <source>Protected zones</source>
+        <target state="translated">Zone protette</target>
+      </trans-unit>
+      <trans-unit id="6a3e2cbf1f29e4e8668686a0a2e65448" approved="yes">
+        <source>Provider settings</source>
+        <target state="translated">Impostazioni del provider</target>
+      </trans-unit>
+      <trans-unit id="eec89088ee408b80387155272b113256" approved="yes">
+        <source>Network</source>
+        <target state="translated">Rete</target>
+      </trans-unit>
+      <trans-unit id="0e010ab13b1b2cbf61bfc375a42813ee" approved="yes">
+        <source>HTTP timeout (seconds)</source>
+        <target state="translated">Timeout HTTP (secondi)</target>
+      </trans-unit>
+      <trans-unit id="b74040bc1467e4a6c605dd61108712f2" approved="yes">
+        <source>Fail open on network error</source>
+        <target state="translated">Consenti in caso di errore di rete</target>
+      </trans-unit>
+      <trans-unit id="0e2fc6f6f3bcc0f263f170bdc97d24c4" approved="yes">
+        <source>If the verification service is unreachable, accept the submission instead of blocking it.</source>
+        <target state="translated">Se il servizio di verifica non è raggiungibile, accetta l'invio invece di bloccarlo.</target>
+      </trans-unit>
+      <trans-unit id="c9cc8cce247e49bae79f15173ce97354" approved="yes">
+        <source>Save</source>
+        <target state="translated">Salva</target>
+      </trans-unit>
+      <trans-unit id="33c91a6e753dc47b8f113b5d44b09b1c" approved="yes">
+        <source>Leave blank to keep the current value.</source>
+        <target state="translated">Lascia vuoto per mantenere il valore attuale.</target>
+      </trans-unit>
+      <trans-unit id="93cba07454f06a4a960172bbd6e2a435" approved="yes">
+        <source>Yes</source>
+        <target state="translated">Sì</target>
+      </trans-unit>
+      <trans-unit id="bafd7322c6e97d25b6299b5d6fe8920b" approved="yes">
+        <source>No</source>
+        <target state="translated">No</target>
+      </trans-unit>
+      <trans-unit id="9a4bfb12d4b66f9930570a78f015bce4" approved="yes">
+        <source>Instance URL</source>
+        <target state="translated">URL dell'istanza</target>
+      </trans-unit>
+      <trans-unit id="f75d8fa5c89351544d372cf90528ccf2" approved="yes">
+        <source>Site key</source>
+        <target state="translated">Chiave del sito</target>
+      </trans-unit>
+      <trans-unit id="952bf87c967660b7bbd4e1eb08cefc92" approved="yes">
+        <source>Secret key</source>
+        <target state="translated">Chiave segreta</target>
+      </trans-unit>
+      <trans-unit id="60c458e3aa525959ff73b290c495ac77" approved="yes">
+        <source>Account secret</source>
+        <target state="translated">Segreto dell'account</target>
+      </trans-unit>
+      <trans-unit id="656a6828d7ef1bb791e42087c4b5ee6e" approved="yes">
+        <source>API key</source>
+        <target state="translated">Chiave API</target>
+      </trans-unit>
+      <trans-unit id="34b6cd75171affba6957e308dcbd92be" approved="yes">
+        <source>Version</source>
+        <target state="translated">Versione</target>
+      </trans-unit>
+      <trans-unit id="25f6bd04603c04cff1410a3124c828dc" approved="yes">
+        <source>v2 - Checkbox</source>
+        <target state="translated">v2 - Casella di controllo</target>
+      </trans-unit>
+      <trans-unit id="cd71903292e9d173a36931e899bfb3de" approved="yes">
+        <source>v2 - Invisible</source>
+        <target state="translated">v2 - Invisibile</target>
+      </trans-unit>
+      <trans-unit id="3759c5ca9b26d1a55e9a3795b0b45dc7" approved="yes">
+        <source>v3 - Score</source>
+        <target state="translated">v3 - Punteggio</target>
+      </trans-unit>
+      <trans-unit id="f55c2c945dfe4b6a2575895ef426e15b" approved="yes">
+        <source>v3 score threshold</source>
+        <target state="translated">Soglia del punteggio v3</target>
+      </trans-unit>
+      <trans-unit id="c9eacd325ebe4512808e0a9c2985104c" approved="yes">
+        <source>Between 0.0 and 1.0. Submissions below this score are rejected (default 0.5).</source>
+        <target state="translated">Tra 0,0 e 1,0. Gli invii al di sotto di questo punteggio vengono rifiutati (predefinito 0,5).</target>
+      </trans-unit>
+      <trans-unit id="d721757161f7f70c5b0949fdb6ec2c30" approved="yes">
+        <source>Theme</source>
+        <target state="translated">Tema</target>
+      </trans-unit>
+      <trans-unit id="9914a0ce04a7b7b6a8e39bec55064b82" approved="yes">
+        <source>Light</source>
+        <target state="translated">Chiaro</target>
+      </trans-unit>
+      <trans-unit id="a18366b217ebf811ad1886e4f4f865b2" approved="yes">
+        <source>Dark</source>
+        <target state="translated">Scuro</target>
+      </trans-unit>
+      <trans-unit id="06b9281e396db002010bde1de57262eb" approved="yes">
+        <source>Auto</source>
+        <target state="translated">Auto</target>
+      </trans-unit>
+      <trans-unit id="650be61892bf690026089544abbd9d26" approved="yes">
+        <source>Mode</source>
+        <target state="translated">Modalità</target>
+      </trans-unit>
+      <trans-unit id="4f8222964f9a317cef99dddc23a121bd" approved="yes">
+        <source>Checkbox</source>
+        <target state="translated">Casella di controllo</target>
+      </trans-unit>
+      <trans-unit id="8bcda43732b0928d269955e0f09ff76f" approved="yes">
+        <source>Invisible</source>
+        <target state="translated">Invisibile</target>
+      </trans-unit>
+      <trans-unit id="6f6cb72d544962fa333e2e34ce64f719" approved="yes">
+        <source>Size</source>
+        <target state="translated">Dimensione</target>
+      </trans-unit>
+      <trans-unit id="960b44c579bc2f6818d2daaf9e4c16f0" approved="yes">
+        <source>Normal</source>
+        <target state="translated">Normale</target>
+      </trans-unit>
+      <trans-unit id="b1fe2c2a59e883740e7ea87667e44a24" approved="yes">
+        <source>Compact</source>
+        <target state="translated">Compatta</target>
+      </trans-unit>
+      <trans-unit id="13b303a6c0d90897b5375ce901acc445" approved="yes">
+        <source>Flexible</source>
+        <target state="translated">Flessibile</target>
+      </trans-unit>
+      <trans-unit id="2a6ba72e93aa7fa676d07973ed2716bb" approved="yes">
+        <source>Endpoint</source>
+        <target state="translated">Endpoint</target>
+      </trans-unit>
+      <trans-unit id="4cc6684df7b4a92b1dec6fce3264fac8" approved="yes">
+        <source>Global</source>
+        <target state="translated">Globale</target>
+      </trans-unit>
+      <trans-unit id="50592cff75e2dc1f92149dda89d0e86a" approved="yes">
+        <source>EU (Germany)</source>
+        <target state="translated">UE (Germania)</target>
+      </trans-unit>
+      <trans-unit id="4765c7fdf7636eee70a74828a8d8943e" approved="yes">
+        <source>Use recaptcha.net</source>
+        <target state="translated">Usa recaptcha.net</target>
+      </trans-unit>
+      <trans-unit id="9e1958a47d004e950473477becfff824" approved="yes">
+        <source>Load scripts and verify from recaptcha.net instead of google.com (for regions blocking google.com).</source>
+        <target state="translated">Carica gli script e verifica tramite recaptcha.net invece di google.com (per le regioni che bloccano google.com).</target>
+      </trans-unit>
+      <trans-unit id="ea71e747add18f7087898299e3035e28" approved="yes">
+        <source>A zone is enabled but no captcha provider is selected.</source>
+        <target state="translated">Una zona è attivata ma non è stato selezionato alcun provider di captcha.</target>
+      </trans-unit>
+      <trans-unit id="a2ec055f7c13cbc4f66df6b1adf201dd" approved="yes">
+        <source>The selected provider is not fully configured; the captcha is inactive until required fields are filled.</source>
+        <target state="translated">Il provider selezionato non è completamente configurato; il captcha è inattivo finché i campi obbligatori non sono compilati.</target>
+      </trans-unit>
+      <trans-unit id="8449ebe0c5a7a3337f477cb2193b1396" approved="yes">
+        <source>The newsletter zone requires the module ps_emailsubscription 2.6.0 or newer.</source>
+        <target state="translated">La zona newsletter richiede il modulo ps_emailsubscription 2.6.0 o successivo.</target>
+      </trans-unit>
+      <trans-unit id="e85c38cf946770eb7b92a5fa2e2cd07d" approved="yes">
+        <source>The contact form module is older than 4.1; the widget will be injected by JavaScript.</source>
+        <target state="translated">Il modulo del form di contatto è precedente alla 4.1; il widget verrà inserito tramite JavaScript.</target>
+      </trans-unit>
+      <trans-unit id="18ab2c24fda9fad6297e512a1a3f4766" approved="yes">
+        <source>Privacy &amp; loading</source>
+        <target state="translated">Privacy e caricamento</target>
+      </trans-unit>
+      <trans-unit id="615d8f82699569824eaac4390fbc50e0" approved="yes">
+        <source>Script loading strategy</source>
+        <target state="translated">Strategia di caricamento dello script</target>
+      </trans-unit>
+      <trans-unit id="224519bbe29687a183a7c6138c2ee6de" approved="yes">
+        <source>Controls when the third-party captcha script is loaded. Providers requiring consent always wait for consent.</source>
+        <target state="translated">Controlla quando viene caricato lo script captcha di terze parti. I provider che richiedono il consenso attendono sempre il consenso.</target>
+      </trans-unit>
+      <trans-unit id="66bd9e6f3270ff1563cba3ade71e7c7b" approved="yes">
+        <source>Immediate (on page load)</source>
+        <target state="translated">Immediato (al caricamento della pagina)</target>
+      </trans-unit>
+      <trans-unit id="8a1b67d3a71fa73abd04fd0c2f8427db" approved="yes">
+        <source>On form interaction (recommended)</source>
+        <target state="translated">All'interazione con il modulo (consigliato)</target>
+      </trans-unit>
+      <trans-unit id="23f5069950182c7de23fb3fb7235f2df" approved="yes">
+        <source>After consent</source>
+        <target state="translated">Dopo il consenso</target>
+      </trans-unit>
+      <trans-unit id="644799ec2ab3f1e56c49219d8f6b686d" approved="yes">
+        <source>Consent cookie name</source>
+        <target state="translated">Nome del cookie di consenso</target>
+      </trans-unit>
+      <trans-unit id="c3c63c74d87838571da049f0a7486cda" approved="yes">
+        <source>Optional. Load the captcha once a cookie with this name exists (to plug in an existing consent banner).</source>
+        <target state="translated">Facoltativo. Carica il captcha quando esiste un cookie con questo nome (per collegare un banner di consenso esistente).</target>
+      </trans-unit>
+      <trans-unit id="f975fca2eef08051857fd6af2ea829b6" approved="yes">
+        <source>Send visitor IP to the provider</source>
+        <target state="translated">Inviare l'IP del visitatore al provider</target>
+      </trans-unit>
+      <trans-unit id="d7c2047847257090f910958f93f974a6" approved="yes">
+        <source>Off by default (data minimization). When on, the visitor IP is forwarded to the verification service.</source>
+        <target state="translated">Disattivato per impostazione predefinita (minimizzazione dei dati). Se attivo, l'IP del visitatore viene inoltrato al servizio di verifica.</target>
+      </trans-unit>
+      <trans-unit id="6fb224e87b9c9c753f4327f94e159ee6" approved="yes">
+        <source>reCAPTCHA v3 with the newsletter zone loads Google on every page (the newsletter block is in the footer). Consider another provider or disabling that zone.</source>
+        <target state="translated">reCAPTCHA v3 con la zona newsletter carica Google su ogni pagina (il blocco newsletter è nel footer). Valuta un altro provider o disattiva quella zona.</target>
+      </trans-unit>
+      <trans-unit id="6fd300b1192f1c33390b5e5d4324947a" approved="yes">
+        <source>The selected provider requires visitor consent: its script loads only after consent.</source>
+        <target state="translated">Il provider selezionato richiede il consenso del visitatore: il suo script viene caricato solo dopo il consenso.</target>
+      </trans-unit>
+      <trans-unit id="6a2485c2b307681ad1b409a9f73d239e" approved="yes">
+        <source>Content Security Policy — if your shop enforces a CSP, allow these sources: %s</source>
+        <target state="translated">Content Security Policy — se il tuo negozio applica una CSP, consenti queste origini: %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

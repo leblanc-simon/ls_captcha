@@ -1,0 +1,28 @@
+{
+    "name": "leblanc-simon/prestashop-ls-captcha",
+    "description": "Multi-provider captcha for PrestaShop (registration, login, contact, newsletter)",
+    "license": "AGPL-3.0-only",
+    "authors": [
+        {
+            "name": "Simon Leblanc",
+            "email": "contact@leblanc-simon.eu"
+        }
+    ],
+    "type": "prestashop-module",
+    "require": {
+        "php": ">=7.4",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "LsCaptcha\\": "src/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        },
+        "preferred-install": "dist",
+        "prepend-autoloader": false
+    }
+}

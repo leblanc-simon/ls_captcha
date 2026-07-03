@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="modules/ls_captcha/ls_captcha.php" source-language="en" target-language="fr" datatype="plaintext">
+    <body>
+      <trans-unit id="4bf57818af5d5d845d67f75c6730eb5c" approved="yes">
+        <source>Captcha verification failed. Please try again.</source>
+        <target state="translated">La vérification du captcha a échoué. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="986e027feaed8376136f99776409b1c7" approved="yes">
+        <source>This form is protected by %s. Load it to continue.</source>
+        <target state="translated">Ce formulaire est protégé par %s. Chargez-le pour continuer.</target>
+      </trans-unit>
+      <trans-unit id="9b55dafda121c2049c6a7ccca100a2c0" approved="yes">
+        <source>Load the captcha</source>
+        <target state="translated">Charger le captcha</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
