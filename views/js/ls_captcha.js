@@ -277,6 +277,13 @@
     }
   }, true);
 
+  // FCaptcha delivers its token through a widget-scoped verification event.
+  document.addEventListener('fcaptcha:verified', function (e) {
+    if (e && e.detail && e.detail.token) {
+      fillAll(e.detail.token);
+    }
+  }, true);
+
   ready(function () {
     var forms = [];
     (cfg.zones || []).forEach(function (zone) {
