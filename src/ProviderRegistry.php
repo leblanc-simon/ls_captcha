@@ -3,6 +3,7 @@
 namespace LsCaptcha;
 
 use LsCaptcha\Provider\CapProvider;
+use LsCaptcha\Provider\FcaptchaProvider;
 use LsCaptcha\Provider\FriendlyCaptchaProvider;
 use LsCaptcha\Provider\HcaptchaProvider;
 use LsCaptcha\Provider\McaptchaProvider;
@@ -37,6 +38,7 @@ class ProviderRegistry
     {
         return [
             CapProvider::class,
+            FcaptchaProvider::class,
             RecaptchaProvider::class,
             HcaptchaProvider::class,
             TurnstileProvider::class,

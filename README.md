@@ -14,7 +14,7 @@ Protects (each zone optional, toggled independently):
 Supported providers (one global provider at a time):
 **Cap** (self-hosted), **Google reCAPTCHA** (v2 checkbox / v2 invisible / v3),
 **hCaptcha**, **Cloudflare Turnstile**, **mCaptcha** (self-hosted),
-**Friendly Captcha** (v2).
+**Friendly Captcha** (v2), **FCaptcha** (self-hosted).
 
 ## Configuration
 
@@ -81,8 +81,8 @@ Configured under **Privacy & loading** on the configuration screen.
 **Provider classification:**
 
 - **Consent required** (cookies / profiling / third-country reuse): reCAPTCHA, hCaptcha. Their script is loaded only after consent.
-- **Legitimate interest (security)**, no consent needed in most setups: Cap and mCaptcha (self-hosted, first-party), Friendly Captcha (EU endpoint by default), Cloudflare Turnstile.
-- **Recommended for the strongest privacy posture:** Cap or mCaptcha (self-hosted, no third party) or Friendly Captcha (EU).
+- **Legitimate interest (security)**, no consent needed in most setups: Cap, mCaptcha and FCaptcha (self-hosted, first-party), Friendly Captcha (EU endpoint by default), Cloudflare Turnstile.
+- **Recommended for the strongest privacy posture:** Cap, mCaptcha or FCaptcha (self-hosted, no third party), or Friendly Captcha (EU).
 
 **Data minimization** — **Send visitor IP to the provider** is **off by default**; the IP is forwarded to the verification service only when enabled.
 
