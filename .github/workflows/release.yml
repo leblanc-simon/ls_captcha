@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build module zip
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check the tag matches the module version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(sed -n "s/.*const VERSION = '\([^']*\)'.*/\1/p" ls_captcha.php)"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match ls_captcha.php VERSION (${version})."
+            exit 1
+          fi
+
+      - name: Build zip
+        run: |
+          git archive --format=zip --prefix=ls_captcha/ \
+            --output="ls_captcha-${GITHUB_REF_NAME}.zip" "${GITHUB_SHA}"
+          unzip -l "ls_captcha-${GITHUB_REF_NAME}.zip"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ls_captcha-${{ github.ref_name }}
+          path: ls_captcha-${{ github.ref_name }}.zip
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "ls_captcha-${GITHUB_REF_NAME}.zip" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" "ls_captcha-${GITHUB_REF_NAME}.zip" \
+              --title "${GITHUB_REF_NAME}" --generate-notes --verify-tag
+          fi
