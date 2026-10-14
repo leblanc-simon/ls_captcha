@@ -290,8 +290,12 @@ class ls_captcha extends Module
         }
 
         // Consent-requiring providers always wait for consent, regardless of the
-        // global strategy chosen by the merchant.
-        $strategy = $provider->requiresConsent()
+        // global strategy chosen by the merchant — unless the merchant has
+        // explicitly waived the consent gate (WAIVE_CONSENT), taking on the
+        // legal responsibility for jurisdictions that mandate prior consent.
+        $waiveConsent = (bool) Settings::get(Settings::WAIVE_CONSENT, 0);
+        $requiresConsent = $provider->requiresConsent() && !$waiveConsent;
+        $strategy = $requiresConsent
             ? 'consent'
             : (string) Settings::get(Settings::LOAD_STRATEGY, Settings::DEFAULT_LOAD_STRATEGY);
 
@@ -306,7 +310,7 @@ class ls_captcha extends Module
             'zones' => $enabledZones,
             'extra' => $provider->getFrontExtra(),
             'loadStrategy' => $strategy,
-            'requiresConsent' => $provider->requiresConsent(),
+            'requiresConsent' => $requiresConsent,
             'consentCookie' => (string) Settings::get(Settings::CONSENT_COOKIE, ''),
             'nonce' => (string) self::$scriptNonce,
             'messages' => [

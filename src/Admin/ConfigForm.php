@@ -98,6 +98,7 @@ class ConfigForm
         }
         Settings::set(Settings::LOAD_STRATEGY, $strategy);
         Settings::set(Settings::CONSENT_COOKIE, trim((string) \Tools::getValue(Settings::CONSENT_COOKIE)));
+        Settings::set(Settings::WAIVE_CONSENT, (int) \Tools::getValue(Settings::WAIVE_CONSENT) ? 1 : 0);
         Settings::set(Settings::SEND_IP, (int) \Tools::getValue(Settings::SEND_IP) ? 1 : 0);
 
         foreach ($this->zones->all() as $zone) {
@@ -219,6 +220,13 @@ class ConfigForm
                     'desc' => $this->trans('Optional. Load the captcha once a cookie with this name exists (to plug in an existing consent banner).'),
                 ],
                 $this->switchInput(
+                    Settings::WAIVE_CONSENT,
+                    $this->trans('Disable the consent request'),
+                    '<div class="alert alert-danger" style="margin-bottom:0">'
+                        . $this->trans('Legal responsibility — read before enabling. By default, providers that set cookies or profile visitors (reCAPTCHA, hCaptcha) load only after the visitor consents. Prior opt-in consent is mandated by the EU and EEA (ePrivacy Directive and GDPR), the United Kingdom (PECR), Switzerland (revised FADP), Brazil (LGPD) and Quebec, Canada (Law 25). The United States (CCPA/CPRA and other state laws) and the rest of Canada (PIPEDA) use an opt-out model instead, and many other countries have no specific rule. Only disable the consent request if your shop serves visitors solely from jurisdictions that do not require prior consent, or if you already collect consent through another mechanism. You remain solely responsible for compliance.')
+                        . '</div>'
+                ),
+                $this->switchInput(
                     Settings::SEND_IP,
                     $this->trans('Send visitor IP to the provider'),
                     $this->trans('Off by default (data minimization). When on, the visitor IP is forwarded to the verification service.')
@@ -311,6 +319,7 @@ class ConfigForm
             Settings::FAIL_OPEN => (int) Settings::get(Settings::FAIL_OPEN, 0),
             Settings::LOAD_STRATEGY => (string) Settings::get(Settings::LOAD_STRATEGY, Settings::DEFAULT_LOAD_STRATEGY),
             Settings::CONSENT_COOKIE => (string) Settings::get(Settings::CONSENT_COOKIE, ''),
+            Settings::WAIVE_CONSENT => (int) Settings::get(Settings::WAIVE_CONSENT, 0),
             Settings::SEND_IP => (int) Settings::get(Settings::SEND_IP, 0),
         ];
 
@@ -377,7 +386,11 @@ class ConfigForm
 
             // Consent gating notice.
             if ($provider->requiresConsent()) {
-                $warnings[] = ['type' => 'info', 'message' => $this->trans('The selected provider requires visitor consent: its script loads only after consent.')];
+                if ((bool) Settings::get(Settings::WAIVE_CONSENT, 0)) {
+                    $warnings[] = ['type' => 'warning', 'message' => $this->trans('Consent request disabled: the selected provider normally requires consent, but its script will load without it. Make sure this complies with the privacy laws applicable to your visitors.')];
+                } else {
+                    $warnings[] = ['type' => 'info', 'message' => $this->trans('The selected provider requires visitor consent: its script loads only after consent.')];
+                }
             }
 
             // CSP directives to add for the active provider.

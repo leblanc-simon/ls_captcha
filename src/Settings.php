@@ -26,6 +26,13 @@ class Settings
     /** Optional cookie name whose presence signals consent (CMP integration). */
     const CONSENT_COOKIE = 'LS_CAPTCHA_CONSENT_COOKIE';
 
+    /**
+     * When on, consent-requiring providers no longer force the 'consent' load
+     * strategy. The merchant takes on the legal responsibility (see the admin
+     * form for the jurisdictions that mandate prior opt-in consent).
+     */
+    const WAIVE_CONSENT = 'LS_CAPTCHA_WAIVE_CONSENT';
+
     /** Whether to forward the visitor IP to the verification service. */
     const SEND_IP = 'LS_CAPTCHA_SEND_IP';
 

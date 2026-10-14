@@ -266,6 +266,18 @@
         <source>Content Security Policy — if your shop enforces a CSP, allow these sources: %s</source>
         <target state="translated">Content Security Policy — si su tienda aplica una CSP, permita estas fuentes: %s</target>
       </trans-unit>
+      <trans-unit id="7ff690e4fd4c66c65de3efff483a6406" approved="yes">
+        <source>Disable the consent request</source>
+        <target state="translated">Desactivar la solicitud de consentimiento</target>
+      </trans-unit>
+      <trans-unit id="21ad29660174241900cfcb059f3b1a3e" approved="yes">
+        <source>Legal responsibility — read before enabling. By default, providers that set cookies or profile visitors (reCAPTCHA, hCaptcha) load only after the visitor consents. Prior opt-in consent is mandated by the EU and EEA (ePrivacy Directive and GDPR), the United Kingdom (PECR), Switzerland (revised FADP), Brazil (LGPD) and Quebec, Canada (Law 25). The United States (CCPA/CPRA and other state laws) and the rest of Canada (PIPEDA) use an opt-out model instead, and many other countries have no specific rule. Only disable the consent request if your shop serves visitors solely from jurisdictions that do not require prior consent, or if you already collect consent through another mechanism. You remain solely responsible for compliance.</source>
+        <target state="translated">Responsabilidad legal — léalo antes de activar. De forma predeterminada, los proveedores que instalan cookies o perfilan a los visitantes (reCAPTCHA, hCaptcha) solo se cargan después de que el visitante da su consentimiento. El consentimiento previo (opt-in) es obligatorio en la UE y el EEE (Directiva ePrivacy y RGPD), el Reino Unido (PECR), Suiza (nLPD revisada), Brasil (LGPD) y Quebec, Canadá (Ley 25). Los Estados Unidos (CCPA/CPRA y otras leyes estatales) y el resto de Canadá (PIPEDA) utilizan en cambio un modelo de opt-out, y muchos otros países no tienen una norma específica. Desactive la solicitud de consentimiento únicamente si su tienda atiende exclusivamente a visitantes situados en jurisdicciones que no exigen consentimiento previo, o si ya recoge el consentimiento mediante otro mecanismo. Usted sigue siendo el único responsable del cumplimiento.</target>
+      </trans-unit>
+      <trans-unit id="6aba3dc84625c63d4f3ff2e02d239009" approved="yes">
+        <source>Consent request disabled: the selected provider normally requires consent, but its script will load without it. Make sure this complies with the privacy laws applicable to your visitors.</source>
+        <target state="translated">Solicitud de consentimiento desactivada: el proveedor seleccionado normalmente requiere consentimiento, pero su script se cargará sin él. Asegúrese de que esto cumple con las leyes de privacidad aplicables a sus visitantes.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

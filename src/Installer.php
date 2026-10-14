@@ -33,6 +33,7 @@ class Installer
         Settings::set(Settings::FAIL_OPEN, 0);
         Settings::set(Settings::LOAD_STRATEGY, Settings::DEFAULT_LOAD_STRATEGY);
         Settings::set(Settings::CONSENT_COOKIE, '');
+        Settings::set(Settings::WAIVE_CONSENT, 0);
         Settings::set(Settings::SEND_IP, 0);
         foreach ($zones->all() as $zone) {
             Settings::set(Settings::zoneKey($zone->getCode()), 0);
@@ -63,6 +64,7 @@ class Installer
             Settings::FAIL_OPEN,
             Settings::LOAD_STRATEGY,
             Settings::CONSENT_COOKIE,
+            Settings::WAIVE_CONSENT,
             Settings::SEND_IP,
         ];
 
