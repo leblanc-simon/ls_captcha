@@ -49,14 +49,14 @@ abstract class AbstractZone implements ZoneInterface
         return ($provider !== null && $provider->isConfigured()) ? $provider : null;
     }
 
-    protected function renderWidget(string $zoneCode): string
+    protected function renderWidget(string $zoneCode, bool $relocate = false): string
     {
         $provider = $this->provider();
         if ($provider === null) {
             return '';
         }
 
-        return $provider->renderWidget(new WidgetContext($zoneCode));
+        return $provider->renderWidget(new WidgetContext($zoneCode, $relocate));
     }
 
     /**
@@ -73,12 +73,12 @@ abstract class AbstractZone implements ZoneInterface
         }
 
         $token = (string) \Tools::getValue(Settings::TOKEN_FIELD);
-        $cacheKey = $provider->getCode() . '|' . $token;
+        $cacheKey = $provider->getCode() . '|' . $this->getCode() . '|' . $token;
 
         if (!array_key_exists($cacheKey, self::$verifyCache)) {
             // Data minimization: only forward the visitor IP when explicitly enabled.
             $remoteIp = Settings::get(Settings::SEND_IP, 0) ? \Tools::getRemoteAddr() : null;
-            self::$verifyCache[$cacheKey] = $provider->verify($token, $remoteIp);
+            self::$verifyCache[$cacheKey] = $provider->verify($token, $remoteIp, new WidgetContext($this->getCode()));
         }
 
         return self::$verifyCache[$cacheKey];

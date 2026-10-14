@@ -14,6 +14,14 @@
         <source>Load the captcha</source>
         <target state="translated">Charger le captcha</target>
       </trans-unit>
+      <trans-unit id="128aad29344d2a4bb91228a06108f13c" approved="yes">
+        <source>The captcha could not be loaded. Please try again.</source>
+        <target state="translated">Le captcha n'a pas pu être chargé. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="88ea4458f35d49218434eadda3b403cc" approved="yes">
+        <source>Please load the captcha before submitting the form.</source>
+        <target state="translated">Veuillez charger le captcha avant d'envoyer le formulaire.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -75,18 +75,31 @@ class Client
 
         if ($raw === false || curl_errno($ch) !== 0) {
             $response->networkError = true;
-            curl_close($ch);
+            $this->close($ch);
 
             return $response;
         }
 
         $response->status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $response->raw = (string) $raw;
-        curl_close($ch);
+        $this->close($ch);
 
         $decoded = json_decode((string) $raw, true);
         $response->data = is_array($decoded) ? $decoded : null;
 
         return $response;
+    }
+
+    /**
+     * curl_close() is a no-op since PHP 8.0 (handles are objects freed with
+     * their last reference) and deprecated since PHP 8.5.
+     *
+     * @param resource|\CurlHandle $ch
+     */
+    private function close($ch): void
+    {
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch);
+        }
     }
 }

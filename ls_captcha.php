@@ -6,6 +6,7 @@ if (!defined('_PS_VERSION_')) {
 
 use LsCaptcha\Admin\ConfigForm;
 use LsCaptcha\Installer;
+use LsCaptcha\Provider\AbstractProvider;
 use LsCaptcha\Provider\ProviderInterface;
 use LsCaptcha\ProviderRegistry;
 use LsCaptcha\Settings;
@@ -27,7 +28,7 @@ spl_autoload_register(function ($class) {
 
 class ls_captcha extends Module
 {
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.0';
 
     /**
      * Optional CSP nonce applied to the dynamically injected provider scripts.
@@ -105,6 +106,11 @@ class ls_captcha extends Module
     public function hookDisplayCustomerLoginFormAfter(array $params): string
     {
         return $this->getZoneRegistry()->renderDisplay('displayCustomerLoginFormAfter', $params);
+    }
+
+    public function hookDisplayPersonalInformationTop(array $params): string
+    {
+        return $this->getZoneRegistry()->renderDisplay('displayPersonalInformationTop', $params);
     }
 
     public function hookDisplayGDPRConsent(array $params): string
@@ -302,7 +308,6 @@ class ls_captcha extends Module
         return [
             'tokenField' => Settings::TOKEN_FIELD,
             'provider' => $provider->getCode(),
-            'providerLabel' => $provider->getLabel(),
             'providerTokenField' => $provider->getTokenFieldName(),
             'behavior' => $provider->getClientBehavior(),
             'scripts' => array_values($provider->getFrontScripts()),
@@ -310,18 +315,11 @@ class ls_captcha extends Module
             'zones' => $enabledZones,
             'extra' => $provider->getFrontExtra(),
             'loadStrategy' => $strategy,
-            'requiresConsent' => $requiresConsent,
             'consentCookie' => (string) Settings::get(Settings::CONSENT_COOKIE, ''),
             'nonce' => (string) self::$scriptNonce,
-            'messages' => [
-                'invalid' => $this->trans('Captcha verification failed. Please try again.', [], 'Modules.Lscaptcha.Shop'),
-                'consentNotice' => $this->trans(
-                    'This form is protected by %s. Load it to continue.',
-                    [$provider->getLabel()],
-                    'Modules.Lscaptcha.Shop'
-                ),
-                'consentButton' => $this->trans('Load the captcha', [], 'Modules.Lscaptcha.Shop'),
-            ],
+            'onloadCallback' => AbstractProvider::ONLOAD_CALLBACK,
+            // Wordings are not passed here: each widget carries its translated
+            // messages in data- attributes (views/templates/hook/widget.tpl).
         ];
     }
 }

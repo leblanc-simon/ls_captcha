@@ -24,8 +24,9 @@ interface ProviderInterface
     /**
      * Declarative description of the configuration fields. The admin form is
      * generated from this. Each entry:
-     * ['name'=>, 'type'=>text|password|url|switch|select, 'label'=>, 'help'=>?,
-     *  'required'=>bool, 'options'=>[value=>label], 'default'=>?].
+     * ['name'=>, 'type'=>text|password|url|decimal|switch|select, 'label'=>,
+     *  'help'=>?, 'required'=>bool, 'options'=>[value=>label], 'default'=>?,
+     *  'min'=>?, 'max'=>? (decimal only)].
      *
      * @return array<int,array<string,mixed>>
      */
@@ -80,6 +81,9 @@ interface ProviderInterface
     /** Rendered HTML of the widget for a given zone. */
     public function renderWidget(WidgetContext $context): string;
 
-    /** Server-side verification of the token. Returns true when the challenge passed. */
-    public function verify(string $token, ?string $remoteIp): bool;
+    /**
+     * Server-side verification of the token submitted for the zone described
+     * by $context. Returns true when the challenge passed.
+     */
+    public function verify(string $token, ?string $remoteIp, WidgetContext $context): bool;
 }

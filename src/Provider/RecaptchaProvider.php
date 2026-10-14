@@ -43,7 +43,9 @@ class RecaptchaProvider extends AbstractProvider
             ],
             [
                 'name' => 'score_threshold',
-                'type' => 'text',
+                'type' => 'decimal',
+                'min' => 0,
+                'max' => 1,
                 'required' => false,
                 'label' => $this->trans('v3 score threshold'),
                 'help' => $this->trans('Between 0.0 and 1.0. Submissions below this score are rejected (default 0.5).'),
@@ -82,17 +84,23 @@ class RecaptchaProvider extends AbstractProvider
 
     public function getFrontScripts(): array
     {
-        $base = 'https://' . $this->host() . '/recaptcha/api.js';
-        if ((string) $this->conf('variant') === 'v3') {
-            $base .= '?render=' . rawurlencode($this->getPublicSiteKey());
-        }
+        // v3 renders itself from the site key; v2 widgets are rendered
+        // explicitly by ls_captcha.js so each one is bound to its own form.
+        $render = $this->isV3() ? rawurlencode($this->getPublicSiteKey()) : 'explicit';
 
-        return [['id' => 'ls-recaptcha', 'url' => $base]];
+        return [[
+            'id' => 'ls-recaptcha',
+            'url' => $this->withOnload('https://' . $this->host() . '/recaptcha/api.js?render=' . $render),
+        ]];
     }
 
     public function getFrontExtra(): array
     {
-        return ['variant' => (string) $this->conf('variant')];
+        return [
+            'variant' => (string) $this->conf('variant'),
+            'api' => 'grecaptcha',
+            'waitOnload' => true,
+        ];
     }
 
     public function requiresConsent(): bool
@@ -113,8 +121,7 @@ class RecaptchaProvider extends AbstractProvider
 
     public function renderWidget(WidgetContext $context): string
     {
-        return $this->fetchWidget([
-            'ls_zone' => $context->getZone(),
+        return $this->fetchWidget($context, [
             'ls_site_key' => $this->getPublicSiteKey(),
             'ls_variant' => (string) $this->conf('variant'),
             'ls_theme' => (string) ($this->conf('theme') ?: 'light'),
@@ -134,21 +141,42 @@ class RecaptchaProvider extends AbstractProvider
         return $this->client()->postForm('https://' . $this->host() . '/recaptcha/api/siteverify', $fields);
     }
 
-    protected function interpret(array $data): bool
+    protected function interpret(array $data, WidgetContext $context): bool
     {
         if (empty($data['success'])) {
             return false;
         }
 
-        if ((string) $this->conf('variant') === 'v3') {
-            $threshold = (float) ($this->conf('score_threshold') ?: 0.5);
+        if ($this->isV3()) {
+            // A v3 token is bound to the action it was requested for: one
+            // obtained on another zone must not be replayed here.
+            if ((string) ($data['action'] ?? '') !== $context->getZone()) {
+                return false;
+            }
+
             $score = isset($data['score']) ? (float) $data['score'] : 0.0;
-            if ($score < $threshold) {
+            if ($score < $this->scoreThreshold()) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private function isV3(): bool
+    {
+        return (string) $this->conf('variant') === 'v3';
+    }
+
+    /** Stored threshold, tolerant of a decimal comma and clamped to [0, 1]. */
+    private function scoreThreshold(): float
+    {
+        $raw = str_replace(',', '.', trim((string) $this->conf('score_threshold')));
+        if (!is_numeric($raw)) {
+            return 0.5;
+        }
+
+        return max(0.0, min(1.0, (float) $raw));
     }
 
     private function host(): string

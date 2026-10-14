@@ -14,6 +14,9 @@ if (!defined('_PS_VERSION_')) {
  */
 class McaptchaProvider extends AbstractProvider
 {
+    /** @var bool */
+    private $rendered = false;
+
     public function getCode(): string
     {
         return 'mcaptcha';
@@ -21,7 +24,7 @@ class McaptchaProvider extends AbstractProvider
 
     public function getLabel(): string
     {
-        return 'mCaptcha (self-hosted)';
+        return $this->trans('%provider% (self-hosted)', ['%provider%' => 'mCaptcha']);
     }
 
     public function getConfigFields(): array
@@ -56,13 +59,25 @@ class McaptchaProvider extends AbstractProvider
         return $directives;
     }
 
+    public function getFrontExtra(): array
+    {
+        // The glue script drives a single widget (fixed element ids): its token
+        // is mirrored into whichever protected form is submitted.
+        return ['singleWidget' => true];
+    }
+
     public function renderWidget(WidgetContext $context): string
     {
+        // Render once per page: the glue script only supports one widget.
+        if ($this->rendered) {
+            return '';
+        }
+        $this->rendered = true;
+
         $instance = $this->instanceUrl();
         $site = $this->getPublicSiteKey();
 
-        return $this->fetchWidget([
-            'ls_zone' => $context->getZone(),
+        return $this->fetchWidget($context, [
             'ls_instance' => $instance,
             'ls_site_key' => $site,
             'ls_widget_url' => $instance === '' ? '' : $instance . '/widget?sitekey=' . rawurlencode($site),
@@ -80,7 +95,7 @@ class McaptchaProvider extends AbstractProvider
         ]);
     }
 
-    protected function interpret(array $data): bool
+    protected function interpret(array $data, WidgetContext $context): bool
     {
         return !empty($data['valid']);
     }

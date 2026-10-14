@@ -210,10 +210,6 @@
         <source>The newsletter zone requires the module ps_emailsubscription 2.6.0 or newer.</source>
         <target state="translated">La zone newsletter nécessite le module ps_emailsubscription 2.6.0 ou plus récent.</target>
       </trans-unit>
-      <trans-unit id="e85c38cf946770eb7b92a5fa2e2cd07d" approved="yes">
-        <source>The contact form module is older than 4.1; the widget will be injected by JavaScript.</source>
-        <target state="translated">Le module de formulaire de contact est antérieur à la 4.1 ; le widget sera injecté par JavaScript.</target>
-      </trans-unit>
       <trans-unit id="18ab2c24fda9fad6297e512a1a3f4766" approved="yes">
         <source>Privacy &amp; loading</source>
         <target state="translated">Confidentialité et chargement</target>
@@ -254,10 +250,6 @@
         <source>Off by default (data minimization). When on, the visitor IP is forwarded to the verification service.</source>
         <target state="translated">Désactivé par défaut (minimisation des données). Si activé, l'IP du visiteur est transmise au service de vérification.</target>
       </trans-unit>
-      <trans-unit id="6fb224e87b9c9c753f4327f94e159ee6" approved="yes">
-        <source>reCAPTCHA v3 with the newsletter zone loads Google on every page (the newsletter block is in the footer). Consider another provider or disabling that zone.</source>
-        <target state="translated">reCAPTCHA v3 avec la zone newsletter charge Google sur toutes les pages (le bloc newsletter est en pied de page). Envisagez un autre fournisseur ou désactivez cette zone.</target>
-      </trans-unit>
       <trans-unit id="6fd300b1192f1c33390b5e5d4324947a" approved="yes">
         <source>The selected provider requires visitor consent: its script loads only after consent.</source>
         <target state="translated">Le fournisseur sélectionné nécessite le consentement du visiteur : son script n'est chargé qu'après consentement.</target>
@@ -277,6 +269,30 @@
       <trans-unit id="6aba3dc84625c63d4f3ff2e02d239009" approved="yes">
         <source>Consent request disabled: the selected provider normally requires consent, but its script will load without it. Make sure this complies with the privacy laws applicable to your visitors.</source>
         <target state="translated">Demande de consentement désactivée : le fournisseur sélectionné requiert normalement le consentement, mais son script se chargera sans celui-ci. Assurez-vous que cela respecte les lois sur la vie privée applicables à vos visiteurs.</target>
+      </trans-unit>
+      <trans-unit id="450e7b426b897f654e639f9b4ada914b" approved="yes">
+        <source>%provider% (self-hosted)</source>
+        <target state="translated">%provider% (auto-hébergé)</target>
+      </trans-unit>
+      <trans-unit id="fcc5d5e83b150cc5627e995d7cb599f7" approved="yes">
+        <source>The field "%field%" must be a valid URL starting with http:// or https://.</source>
+        <target state="translated">Le champ « %field% » doit être une URL valide commençant par http:// ou https://.</target>
+      </trans-unit>
+      <trans-unit id="fddffc205db2328e15d31b6706607d63" approved="yes">
+        <source>The field "%field%" must be a number between %min% and %max%.</source>
+        <target state="translated">Le champ « %field% » doit être un nombre compris entre %min% et %max%.</target>
+      </trans-unit>
+      <trans-unit id="d3cf82906271ed2d4615aff1e544c267" approved="yes">
+        <source>The instance URL of the selected provider uses HTTP: the secret key is sent unencrypted. Use HTTPS in production.</source>
+        <target state="translated">L'URL de l'instance du fournisseur sélectionné utilise HTTP : la clé secrète est transmise en clair. Utilisez HTTPS en production.</target>
+      </trans-unit>
+      <trans-unit id="2a2b703f0443df7c7d6d77e856e119a0" approved="yes">
+        <source>The contact form module is older than 4.1 and does not display the captcha: the contact zone would reject every message. Update the contactform module or disable this zone.</source>
+        <target state="translated">Le module de formulaire de contact est antérieur à la 4.1 et n'affiche pas le captcha : la zone contact rejetterait tous les messages. Mettez à jour le module contactform ou désactivez cette zone.</target>
+      </trans-unit>
+      <trans-unit id="dd40fac6d7b3eeb9448301385ed0411a" approved="yes">
+        <source>The newsletter zone is enabled with the "Immediate" loading strategy: the captcha script is loaded on every page (the newsletter block is in the footer). Prefer "On form interaction".</source>
+        <target state="translated">La zone newsletter est activée avec la stratégie de chargement « Immédiat » : le script du captcha est chargé sur toutes les pages (le bloc newsletter est dans le pied de page). Préférez « À l'interaction avec le formulaire ».</target>
       </trans-unit>
     </body>
   </file>

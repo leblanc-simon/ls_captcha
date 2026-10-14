@@ -19,8 +19,14 @@ Supported providers (one global provider at a time):
 ## Configuration
 
 Modules → *LS Captcha* → **Configure**. Pick a provider, fill its fields, enable
-the zones you want, then save. Network options: HTTP timeout and *fail open on
-network error* (accept submissions when the verification service is unreachable).
+the zones you want, then save. URL fields must be absolute `http(s)://` URLs and
+the reCAPTCHA v3 threshold a number between 0 and 1 (a decimal comma is
+accepted). Network options: HTTP timeout and *fail open on network error*
+(accept submissions when the verification service is unreachable — an answer
+that is not JSON, e.g. a wrong instance URL, is always rejected).
+
+Technical verification failures are written to *Advanced Parameters → Logs*
+(object type `ls_captcha`).
 
 No composer install is required: the `LsCaptcha\` namespace is autoloaded by the
 main module file.
@@ -33,9 +39,14 @@ main module file.
 - `src/Settings.php` — configuration access (keys prefixed `LS_CAPTCHA_`).
 - `src/Http/Client.php` — dependency-free cURL client.
 - `src/Admin/ConfigForm.php` — the `getContent()` + HelperForm screen.
-- `views/js/ls_captcha.js` — loads the provider script(s) and guarantees the
-  token reaches every protected form under the single field `ls_captcha_token`
-  (the only field the server reads).
+- `views/templates/hook/widget.tpl` — wrapper shared by every widget: zone and
+  translated front wordings (`data-ls-captcha-msg-*`), then the provider template.
+- `views/js/ls_captcha.js` — loads the provider script(s), binds each widget to
+  its own form and guarantees the token reaches that form under the single field
+  `ls_captcha_token` (the only field the server reads). Submissions are
+  intercepted in the capture phase, before any other submit handler (e.g. the
+  newsletter AJAX), and replayed with the clicked button for execute providers.
+  reCAPTCHA v2, hCaptcha and Turnstile are rendered explicitly (one widget per form).
 
 ## Add a captcha provider
 
@@ -43,7 +54,8 @@ main module file.
    (implement `getCode`, `getLabel`, `getConfigFields`, `getTokenFieldName`,
    `getFrontScripts`, `callSiteverify`, `interpret`; override
    `getClientBehavior` / `getFrontExtra` / `renderWidget` if needed).
-2. Create `views/templates/hook/widget-xxx.tpl`.
+2. Create `views/templates/hook/widget-xxx.tpl` (inner markup only: the shared
+   `widget.tpl` wrapper is added by `fetchWidget()`).
 3. Add the class to `ProviderRegistry::classes()`.
 
 The admin selector, the generated config fields, script loading and server
@@ -55,8 +67,8 @@ verification are then automatic.
    `getLabel`, `getHooks`, and one `hook<Name>()` method per hook.
 2. Add the class to `ZoneRegistry::classes()`.
 3. For each **new** hook (not already handled by another zone), add the matching
-   `hook<Name>()` delegation method in `ls_captcha.php`, then reinstall the
-   module (or register the hook on upgrade).
+   `hook<Name>()` delegation method in `ls_captcha.php`, and register it for
+   existing installs in an `upgrade/upgrade-x.y.z.php` script.
 
 The admin enable switch is then automatic.
 
@@ -97,6 +109,14 @@ Configured under **Privacy & loading** on the configuration screen.
 - `mCaptcha` loads its glue script from unpkg by default; serve it locally
   (`views/js/vendor/`) for stricter CSP.
 - Captcha tokens are single-use; the module memoizes verification per request so
-  complementary hooks never consume a token twice.
+  complementary hooks never consume a token twice. After an AJAX submission
+  (newsletter) the widget is reset for the next attempt.
+- reCAPTCHA v3 and Turnstile tokens are bound to their zone (action checked
+  server-side). The hostname is not checked: restrict the allowed domains in
+  the provider console.
+- Checkout login: its form has no hook, so the widget is rendered through
+  `displayPersonalInformationTop` and moved into the form by the front script.
+- mCaptcha: its glue script supports a single widget per page; the widget is
+  rendered once and its token is used by whichever protected form is submitted.
 - A misconfigured provider never locks customers out: verification passes until
   the required fields are filled (a warning is shown in the admin diagnostics).

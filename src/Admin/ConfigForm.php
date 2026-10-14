@@ -53,32 +53,34 @@ class ConfigForm
         $providerCode = (string) \Tools::getValue(Settings::PROVIDER);
         $provider = $this->providers->get($providerCode);
 
+        $missing = [];
         $errors = [];
         if ($provider !== null) {
             foreach ($provider->getConfigFields() as $field) {
-                if (empty($field['required'])) {
-                    continue;
-                }
                 $key = Settings::providerFieldKey($providerCode, $field['name']);
-                $submitted = (string) \Tools::getValue($key);
+                $submitted = $this->normalize($field, (string) \Tools::getValue($key));
                 $isPassword = ($field['type'] ?? '') === 'password';
-                if ($isPassword && $submitted === '') {
-                    // Keep existing secret; only an error if none exists yet.
-                    if ((string) Settings::get($key) === '') {
-                        $errors[] = $field['label'];
+
+                if (!empty($field['required']) && $submitted === '') {
+                    // A blank password keeps the existing secret; only an error if none exists yet.
+                    if (!$isPassword || (string) Settings::get($key) === '') {
+                        $missing[] = $field['label'];
                     }
                     continue;
                 }
-                if ($submitted === '') {
-                    $errors[] = $field['label'];
+
+                $error = $this->validate($field, $submitted);
+                if ($error !== null) {
+                    $errors[] = $error;
                 }
             }
         }
 
+        if (!empty($missing)) {
+            array_unshift($errors, $this->trans('Please fill the required fields: %s', [implode(', ', $missing)]));
+        }
         if (!empty($errors)) {
-            return $this->module->displayError(
-                $this->module->translate('Please fill the required fields: %s', [implode(', ', $errors)], 'Modules.Lscaptcha.Admin')
-            );
+            return $this->module->displayError($errors);
         }
 
         Settings::set(Settings::PROVIDER, $providerCode);
@@ -108,7 +110,7 @@ class ConfigForm
         foreach ($this->providers->all() as $p) {
             foreach ($p->getConfigFields() as $field) {
                 $key = Settings::providerFieldKey($p->getCode(), $field['name']);
-                $value = (string) \Tools::getValue($key);
+                $value = $this->normalize($field, (string) \Tools::getValue($key));
                 if (($field['type'] ?? '') === 'password' && $value === '') {
                     continue; // do not erase an existing secret
                 }
@@ -116,9 +118,58 @@ class ConfigForm
             }
         }
 
-        return $this->module->displayConfirmation(
-            $this->module->translate('Settings updated.', [], 'Modules.Lscaptcha.Admin')
-        );
+        return $this->module->displayConfirmation($this->trans('Settings updated.'));
+    }
+
+    /**
+     * Canonical form of a submitted provider value (trimmed; decimal comma
+     * accepted for decimal fields).
+     *
+     * @param array<string,mixed> $field
+     */
+    private function normalize(array $field, string $value): string
+    {
+        $value = trim($value);
+        if (($field['type'] ?? '') === 'decimal') {
+            $value = str_replace(',', '.', $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Error message for an invalid non-empty value, null when it is valid.
+     *
+     * @param array<string,mixed> $field
+     */
+    private function validate(array $field, string $value): ?string
+    {
+        if ($value === '') {
+            return null;
+        }
+
+        $type = $field['type'] ?? 'text';
+        if ($type === 'url') {
+            $scheme = strtolower((string) parse_url($value, PHP_URL_SCHEME));
+            if (!in_array($scheme, ['http', 'https'], true) || !\Validate::isAbsoluteUrl($value)) {
+                return $this->trans(
+                    'The field "%field%" must be a valid URL starting with http:// or https://.',
+                    ['%field%' => $field['label']]
+                );
+            }
+        }
+        if ($type === 'decimal') {
+            $min = (float) ($field['min'] ?? 0);
+            $max = (float) ($field['max'] ?? 1);
+            if (!is_numeric($value) || (float) $value < $min || (float) $value > $max) {
+                return $this->trans(
+                    'The field "%field%" must be a number between %min% and %max%.',
+                    ['%field%' => $field['label'], '%min%' => $min, '%max%' => $max]
+                );
+            }
+        }
+
+        return null;
     }
 
     private function renderForm(): string
@@ -172,7 +223,7 @@ class ConfigForm
         $providerInputs = [];
         foreach ($this->providers->all() as $provider) {
             foreach ($provider->getConfigFields() as $field) {
-                $providerInputs[] = $this->providerInput($provider->getCode(), $provider->getLabel(), $field);
+                $providerInputs[] = $this->providerInput($provider->getCode(), $field);
             }
         }
         $forms[] = ['form' => [
@@ -219,13 +270,14 @@ class ConfigForm
                     'name' => Settings::CONSENT_COOKIE,
                     'desc' => $this->trans('Optional. Load the captcha once a cookie with this name exists (to plug in an existing consent banner).'),
                 ],
-                $this->switchInput(
-                    Settings::WAIVE_CONSENT,
-                    $this->trans('Disable the consent request'),
-                    '<div class="alert alert-danger" style="margin-bottom:0">'
-                        . $this->trans('Legal responsibility — read before enabling. By default, providers that set cookies or profile visitors (reCAPTCHA, hCaptcha) load only after the visitor consents. Prior opt-in consent is mandated by the EU and EEA (ePrivacy Directive and GDPR), the United Kingdom (PECR), Switzerland (revised FADP), Brazil (LGPD) and Quebec, Canada (Law 25). The United States (CCPA/CPRA and other state laws) and the rest of Canada (PIPEDA) use an opt-out model instead, and many other countries have no specific rule. Only disable the consent request if your shop serves visitors solely from jurisdictions that do not require prior consent, or if you already collect consent through another mechanism. You remain solely responsible for compliance.')
-                        . '</div>'
-                ),
+                $this->switchInput(Settings::WAIVE_CONSENT, $this->trans('Disable the consent request')),
+                [
+                    'type' => 'html',
+                    'name' => 'ls_captcha_waive_consent_warning',
+                    'html_content' => '<div class="alert alert-danger">'
+                        . htmlspecialchars($this->trans('Legal responsibility — read before enabling. By default, providers that set cookies or profile visitors (reCAPTCHA, hCaptcha) load only after the visitor consents. Prior opt-in consent is mandated by the EU and EEA (ePrivacy Directive and GDPR), the United Kingdom (PECR), Switzerland (revised FADP), Brazil (LGPD) and Quebec, Canada (Law 25). The United States (CCPA/CPRA and other state laws) and the rest of Canada (PIPEDA) use an opt-out model instead, and many other countries have no specific rule. Only disable the consent request if your shop serves visitors solely from jurisdictions that do not require prior consent, or if you already collect consent through another mechanism. You remain solely responsible for compliance.'), ENT_QUOTES, 'UTF-8')
+                        . '</div>',
+                ],
                 $this->switchInput(
                     Settings::SEND_IP,
                     $this->trans('Send visitor IP to the provider'),
@@ -242,16 +294,26 @@ class ConfigForm
      * @param array<string,mixed> $field
      * @return array<string,mixed>
      */
-    private function providerInput(string $providerCode, string $providerLabel, array $field): array
+    private function providerInput(string $providerCode, array $field): array
     {
         $key = Settings::providerFieldKey($providerCode, $field['name']);
         $type = $field['type'] ?? 'text';
+        // Only the selected provider's fields are shown (renderToggleScript),
+        // so the description carries the help alone. HelperForm renders an
+        // array as separate lines: no sentence is glued to another.
+        $desc = isset($field['help']) ? [$field['help']] : [];
         $input = [
             'name' => $key,
             'label' => $field['label'],
             'form_group_class' => 'ls-cap-field ls-cap-' . $providerCode,
-            'desc' => sprintf('[%s]', $providerLabel) . (isset($field['help']) ? ' ' . $field['help'] : ''),
         ];
+
+        if ($type === 'password') {
+            $desc[] = $this->trans('Leave blank to keep the current value.');
+        }
+        if (!empty($desc)) {
+            $input['desc'] = $desc;
+        }
 
         if ($type === 'switch') {
             return array_merge($input, $this->switchValues($key));
@@ -268,13 +330,15 @@ class ConfigForm
         }
         if ($type === 'password') {
             $input['type'] = 'password';
-            $input['desc'] .= ' ' . $this->trans('Leave blank to keep the current value.');
 
             return $input;
         }
 
-        // text, url
+        // text, url, decimal
         $input['type'] = 'text';
+        if ($type === 'decimal') {
+            $input['class'] = 'fixed-width-sm';
+        }
 
         return $input;
     }
@@ -371,17 +435,30 @@ class ConfigForm
         $contact = $this->zones->get('contact');
         if ($contact !== null && $contact->isEnabled()) {
             if (!$this->moduleAtLeast('contactform', '4.1.0')) {
-                $warnings[] = ['type' => 'info', 'message' => $this->trans('The contact form module is older than 4.1; the widget will be injected by JavaScript.')];
+                $warnings[] = ['type' => 'warning', 'message' => $this->trans('The contact form module is older than 4.1 and does not display the captcha: the contact zone would reject every message. Update the contactform module or disable this zone.')];
             }
         }
 
         if ($provider !== null) {
-            // reCAPTCHA v3 + newsletter loads Google on every page (footer block).
-            if ($provider->getCode() === 'recaptcha'
-                && (string) Settings::get(Settings::providerFieldKey('recaptcha', 'variant')) === 'v3'
+            // The newsletter block sits in the footer: loading immediately means
+            // loading the provider script on every page.
+            $consentForced = $provider->requiresConsent() && !(bool) Settings::get(Settings::WAIVE_CONSENT, 0);
+            if (!$consentForced
+                && (string) Settings::get(Settings::LOAD_STRATEGY, Settings::DEFAULT_LOAD_STRATEGY) === 'immediate'
                 && $newsletter !== null && $newsletter->isEnabled()
             ) {
-                $warnings[] = ['type' => 'warning', 'message' => $this->trans('reCAPTCHA v3 with the newsletter zone loads Google on every page (the newsletter block is in the footer). Consider another provider or disabling that zone.')];
+                $warnings[] = ['type' => 'warning', 'message' => $this->trans('The newsletter zone is enabled with the "Immediate" loading strategy: the captcha script is loaded on every page (the newsletter block is in the footer). Prefer "On form interaction".')];
+            }
+
+            // A secret sent over plain HTTP to a self-hosted instance.
+            foreach ($provider->getConfigFields() as $field) {
+                if (($field['type'] ?? '') !== 'url') {
+                    continue;
+                }
+                $url = (string) Settings::get(Settings::providerFieldKey($provider->getCode(), $field['name']), '');
+                if (stripos($url, 'http://') === 0) {
+                    $warnings[] = ['type' => 'warning', 'message' => $this->trans('The instance URL of the selected provider uses HTTP: the secret key is sent unencrypted. Use HTTPS in production.')];
+                }
             }
 
             // Consent gating notice.
@@ -454,7 +531,7 @@ class ConfigForm
     }
 
     /**
-     * @param array<int,mixed> $params
+     * @param array<int|string,mixed> $params
      */
     private function trans(string $id, array $params = []): string
     {

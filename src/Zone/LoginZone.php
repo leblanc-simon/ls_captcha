@@ -9,8 +9,10 @@ if (!defined('_PS_VERSION_')) {
 /**
  * Customer login.
  *
- * - displayCustomerLoginFormAfter : render the widget (rendered OUTSIDE the
- *   form by the theme — ls_captcha.js mirrors the token into the form).
+ * - displayCustomerLoginFormAfter : render the widget on the authentication
+ *   page (OUTSIDE the form — ls_captcha.js writes the token into the form).
+ * - displayPersonalInformationTop : render the widget in the checkout, whose
+ *   login form has no hook of its own; ls_captcha.js moves it into that form.
  * - actionAuthenticationBefore    : fires inside CustomerLoginForm::submit()
  *   with no params and an ignored return value, so the only way to block is to
  *   push an error and redirect (which exits) before credentials are checked.
@@ -32,6 +34,7 @@ class LoginZone extends AbstractZone
     {
         return [
             'displayCustomerLoginFormAfter',
+            'displayPersonalInformationTop',
             'actionAuthenticationBefore',
         ];
     }
@@ -42,6 +45,19 @@ class LoginZone extends AbstractZone
     public function hookDisplayCustomerLoginFormAfter(array $params): string
     {
         return $this->renderWidget('login');
+    }
+
+    /**
+     * @param array<string,mixed> $params
+     */
+    public function hookDisplayPersonalInformationTop(array $params): string
+    {
+        $customer = \Context::getContext()->customer;
+        if ($this->currentPhpSelf() !== 'order' || ($customer !== null && $customer->isLogged())) {
+            return '';
+        }
+
+        return $this->renderWidget('login', true);
     }
 
     /**

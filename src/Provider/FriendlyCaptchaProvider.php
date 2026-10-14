@@ -69,8 +69,7 @@ class FriendlyCaptchaProvider extends AbstractProvider
 
     public function renderWidget(WidgetContext $context): string
     {
-        return $this->fetchWidget([
-            'ls_zone' => $context->getZone(),
+        return $this->fetchWidget($context, [
             'ls_site_key' => $this->getPublicSiteKey(),
             'ls_endpoint' => $this->endpoint(),
         ]);
@@ -87,7 +86,7 @@ class FriendlyCaptchaProvider extends AbstractProvider
         );
     }
 
-    protected function interpret(array $data): bool
+    protected function interpret(array $data, WidgetContext $context): bool
     {
         return !empty($data['success']);
     }

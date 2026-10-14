@@ -21,7 +21,7 @@ class CapProvider extends AbstractProvider
 
     public function getLabel(): string
     {
-        return 'Cap (self-hosted)';
+        return $this->trans('%provider% (self-hosted)', ['%provider%' => 'Cap']);
     }
 
     public function getConfigFields(): array
@@ -73,26 +73,28 @@ class CapProvider extends AbstractProvider
 
     public function renderWidget(WidgetContext $context): string
     {
-        return $this->fetchWidget([
-            'ls_zone' => $context->getZone(),
-            'ls_instance' => $this->instanceUrl(),
-            'ls_site_key' => $this->getPublicSiteKey(),
+        return $this->fetchWidget($context, [
+            'ls_api_endpoint' => $this->apiEndpoint(),
         ]);
     }
 
     protected function callSiteverify(string $token, ?string $remoteIp): Response
     {
-        $url = $this->instanceUrl() . '/' . $this->getPublicSiteKey() . '/siteverify';
-
-        return $this->client()->postJson($url, [
+        return $this->client()->postJson($this->apiEndpoint() . 'siteverify', [
             'secret' => (string) $this->conf('secret_key'),
             'response' => $token,
         ]);
     }
 
-    protected function interpret(array $data): bool
+    protected function interpret(array $data, WidgetContext $context): bool
     {
         return !empty($data['success']);
+    }
+
+    /** Per-site API base: <instance>/<site key>/ (the key is path-encoded). */
+    private function apiEndpoint(): string
+    {
+        return $this->instanceUrl() . '/' . rawurlencode($this->getPublicSiteKey()) . '/';
     }
 
     private function instanceUrl(): string

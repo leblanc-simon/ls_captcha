@@ -68,7 +68,16 @@ class HcaptchaProvider extends AbstractProvider
 
     public function getFrontScripts(): array
     {
-        return [['id' => 'ls-hcaptcha', 'url' => 'https://js.hcaptcha.com/1/api.js']];
+        // Rendered explicitly by ls_captcha.js so each widget is bound to its form.
+        return [[
+            'id' => 'ls-hcaptcha',
+            'url' => $this->withOnload('https://js.hcaptcha.com/1/api.js?render=explicit'),
+        ]];
+    }
+
+    public function getFrontExtra(): array
+    {
+        return ['api' => 'hcaptcha', 'waitOnload' => true];
     }
 
     public function requiresConsent(): bool
@@ -91,8 +100,7 @@ class HcaptchaProvider extends AbstractProvider
     {
         $mode = (string) $this->conf('mode');
 
-        return $this->fetchWidget([
-            'ls_zone' => $context->getZone(),
+        return $this->fetchWidget($context, [
             'ls_site_key' => $this->getPublicSiteKey(),
             'ls_theme' => (string) ($this->conf('theme') ?: 'light'),
             'ls_size' => $mode === 'invisible' ? 'invisible' : (string) ($this->conf('size') ?: 'normal'),
@@ -113,7 +121,7 @@ class HcaptchaProvider extends AbstractProvider
         return $this->client()->postForm('https://api.hcaptcha.com/siteverify', $fields);
     }
 
-    protected function interpret(array $data): bool
+    protected function interpret(array $data, WidgetContext $context): bool
     {
         return !empty($data['success']);
     }

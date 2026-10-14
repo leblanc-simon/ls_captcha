@@ -21,7 +21,7 @@ class FcaptchaProvider extends AbstractProvider
 
     public function getLabel(): string
     {
-        return 'FCaptcha (self-hosted)';
+        return $this->trans('%provider% (self-hosted)', ['%provider%' => 'FCaptcha']);
     }
 
     public function getConfigFields(): array
@@ -79,8 +79,7 @@ class FcaptchaProvider extends AbstractProvider
 
     public function renderWidget(WidgetContext $context): string
     {
-        return $this->fetchWidget([
-            'ls_zone' => $context->getZone(),
+        return $this->fetchWidget($context, [
             'ls_instance' => $this->instanceUrl(),
             'ls_site_key' => $this->getPublicSiteKey(),
             'ls_theme' => (string) ($this->conf('theme') ?: 'light'),
@@ -103,7 +102,7 @@ class FcaptchaProvider extends AbstractProvider
         );
     }
 
-    protected function interpret(array $data): bool
+    protected function interpret(array $data, WidgetContext $context): bool
     {
         return !empty($data['success']);
     }

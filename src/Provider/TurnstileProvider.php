@@ -56,7 +56,16 @@ class TurnstileProvider extends AbstractProvider
 
     public function getFrontScripts(): array
     {
-        return [['id' => 'ls-turnstile', 'url' => 'https://challenges.cloudflare.com/turnstile/v0/api.js']];
+        // Rendered explicitly by ls_captcha.js so each widget is bound to its form.
+        return [[
+            'id' => 'ls-turnstile',
+            'url' => $this->withOnload('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'),
+        ]];
+    }
+
+    public function getFrontExtra(): array
+    {
+        return ['api' => 'turnstile', 'waitOnload' => true];
     }
 
     public function getCspDirectives(): array
@@ -69,8 +78,7 @@ class TurnstileProvider extends AbstractProvider
 
     public function renderWidget(WidgetContext $context): string
     {
-        return $this->fetchWidget([
-            'ls_zone' => $context->getZone(),
+        return $this->fetchWidget($context, [
             'ls_site_key' => $this->getPublicSiteKey(),
             'ls_theme' => (string) ($this->conf('theme') ?: 'auto'),
             'ls_size' => (string) ($this->conf('size') ?: 'normal'),
@@ -90,8 +98,16 @@ class TurnstileProvider extends AbstractProvider
         return $this->client()->postForm('https://challenges.cloudflare.com/turnstile/v0/siteverify', $fields);
     }
 
-    protected function interpret(array $data): bool
+    protected function interpret(array $data, WidgetContext $context): bool
     {
-        return !empty($data['success']);
+        if (empty($data['success'])) {
+            return false;
+        }
+
+        // The widget is rendered with the zone as action: reject a token
+        // obtained on another zone. Cloudflare test keys return no action.
+        $action = (string) ($data['action'] ?? '');
+
+        return $action === '' || $action === $context->getZone();
     }
 }
