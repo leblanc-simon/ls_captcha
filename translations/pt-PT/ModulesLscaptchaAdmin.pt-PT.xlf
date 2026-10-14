@@ -130,6 +130,10 @@
         <source>Between 0.0 and 1.0. Submissions below this score are rejected (default 0.5).</source>
         <target state="translated">Entre 0,0 e 1,0. Os envios abaixo desta pontuação são rejeitados (predefinição 0,5).</target>
       </trans-unit>
+      <trans-unit id="fc22021a3598794e67faa7cfd71a7083" approved="yes">
+        <source>Optional. Only needed when the FCaptcha instance restricts site keys (FCAPTCHA_SITE_KEYS) or serves several sites.</source>
+        <target state="translated">Opcional. Só é necessária se a instância FCaptcha restringir as chaves do site (FCAPTCHA_SITE_KEYS) ou servir vários sites.</target>
+      </trans-unit>
       <trans-unit id="d721757161f7f70c5b0949fdb6ec2c30" approved="yes">
         <source>Theme</source>
         <target state="translated">Tema</target>

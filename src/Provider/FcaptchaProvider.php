@@ -28,7 +28,13 @@ class FcaptchaProvider extends AbstractProvider
     {
         return [
             ['name' => 'instance_url', 'type' => 'url', 'required' => true, 'label' => $this->trans('Instance URL')],
-            ['name' => 'site_key', 'type' => 'text', 'required' => true, 'label' => $this->trans('Site key')],
+            [
+                'name' => 'site_key',
+                'type' => 'text',
+                'required' => false,
+                'label' => $this->trans('Site key'),
+                'help' => $this->trans('Optional. Only needed when the FCaptcha instance restricts site keys (FCAPTCHA_SITE_KEYS) or serves several sites.'),
+            ],
             ['name' => 'secret_key', 'type' => 'password', 'required' => true, 'label' => $this->trans('Secret key')],
             [
                 'name' => 'theme',
